@@ -41,10 +41,34 @@ Caso esteja no Windows, execute os comandos abaixo com o Git Bash.
 
 Abra o seu terminal na pasta `infra/kong-k8s/kind` e execute o comando: `./kind.sh`.
 
-E com o comando: `kubectl get pods -A`, você poderá ver os pods do kind.
+E com o comando: `kubectl get pods -A`, você poderá ver os pods do kind subiram.
 
-**Agora, vamos subir o Kong:**
+**Vamos subir o Kong:**
 
 Abra o seu terminal na pasta `infra/kong-k8s/kong` e execute o comando: `./kong.sh`.
 
-E com o comando: `kubectl get pods -n kong`, você poderá ver se o pod do kong subiu.
+E com o comando: `kubectl get pods -n kong`, você poderá ver se os pods do kong subiram.
+
+**Vamos subir o Prometheus:**
+
+Abra o seu terminal na pasta `infra/kong-k8s/misc/prometheus` e execute o comando: `./prometheus.sh`.
+
+E com o comando: `kubectl get pods -n monitoring`, você poderá ver se os pods do prometheus subiram.
+
+**Vamos subir o KeyCloak:**
+
+Abra o seu terminal na pasta `infra/kong-k8s/misc/keycloak` e execute o comando: `./keycloak.sh`.
+
+E com o comando: `kubectl get pods -n iam`, você poderá ver se os pods do keycloak subiram.
+
+### Subindo as aplicações back-end
+
+Para subir os containers do serviço de apostas bets, siga os passos abaixo:
+
+Abra um terminal e execute o comando: `kubectl create ns bets`.
+
+Agora, copie o path completo da pasta `infra/kong-k8s/misc/apps` e cole no comando:
+`kubectl apply -f {path} --recursive -n bets`.
+![img_3.png](readme_images/img_3.png)
+
+---
