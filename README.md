@@ -86,5 +86,27 @@ Abra um terminal  e execute o comando com path acima: `kubectl apply -f {path} -
 
 Copie o path completo do arquivo: `infra/kong-k8s/misc/apis/kprometheus.yaml`.
 
-Abra um terminal  e execute o comando com path acima: `kubectl apply -f {path}`.
+Abra um terminal e execute o comando com path acima: `kubectl apply -f {path}`.
 ![img_5.png](readme_images/img_5.png)
+
+### Configurando o Ingress
+
+Responsável por configurar regras de roteamento de tráfego para serviços dentro do cluster Kubernetes.
+
+Para isso utilizaremos o arquivo: `infra/kong-k8s/misc/apis/bets-api.yaml`, copie o path completo.
+
+Abra um terminal e execute o comando com path acima: `kubectl apply -f {path} -n bets`.
+![img_6.png](readme_images/img_6.png)
+
+**Agora vamos configurar para utilizar o mecanismo de service do Kubernetes:**
+
+> Lembrando que deixamos os plugins desabilitados no `bets-api.yaml`.
+> ![img_10.png](readme_images/img_10.png)
+
+Para isso utilizaremos o arquivo: `infra/kong-k8s/misc/apis/king.yaml`, copie o path completo.
+
+Abra um terminal e execute o comando com path acima: `kubectl apply -f {path} -n bets`.
+![img_7.png](readme_images/img_7.png)
+
+Podemos utilizar o Postman para testar:
+![img_8.png](readme_images/img_8.png)![img_9.png](readme_images/img_9.png)
