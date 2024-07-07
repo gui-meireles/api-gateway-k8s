@@ -22,3 +22,29 @@ de dados** em vez de serem definidas diretamente nos arquivos de configuração.
 
 ### Modelo de deployment via db-less (Recomendado)
 ![img_2.png](readme_images/img_2.png)
+
+---
+
+## Instalação
+
+Itens necessários:
+
+- kind;
+- kubectl;
+- helm v3;
+
+### Com os programas acima instalados...
+
+Caso esteja no Windows, execute os comandos abaixo com o Git Bash.
+
+**Vamos subir o Cluster:**
+
+Abra o seu terminal na pasta `infra/kong-k8s/kind` e execute o comando: `./kind.sh`.
+
+E com o comando: `kubectl get pods -A`, você poderá ver os pods do kind.
+
+**Agora, vamos subir o Kong:**
+
+Abra o seu terminal na pasta `infra/kong-k8s/kong` e execute o comando: `./kong.sh`.
+
+E com o comando: `kubectl get pods -n kong`, você poderá ver se o pod do kong subiu.
