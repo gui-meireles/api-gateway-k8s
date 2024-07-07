@@ -67,8 +67,24 @@ Para subir os containers do serviço de apostas bets, siga os passos abaixo:
 
 Abra um terminal e execute o comando: `kubectl create ns bets`.
 
-Agora, copie o path completo da pasta `infra/kong-k8s/misc/apps` e cole no comando:
+Agora, copie o path completo da pasta: `infra/kong-k8s/misc/apps` e cole no comando:
 `kubectl apply -f {path} --recursive -n bets`.
 ![img_3.png](readme_images/img_3.png)
 
 ---
+
+## Configurando os plugins do Kong pelo k8s
+
+**Vamos configurar o plugin de rate limit por header:**
+
+Copie o path completo do arquivo: `infra/kong-k8s/misc/apis/kratelimit.yaml`.
+
+Abra um terminal  e execute o comando com path acima: `kubectl apply -f {path} -n bets`.
+![img_4.png](readme_images/img_4.png)
+
+**Vamos configurar o plugin de prometheus globalmente:**
+
+Copie o path completo do arquivo: `infra/kong-k8s/misc/apis/kprometheus.yaml`.
+
+Abra um terminal  e execute o comando com path acima: `kubectl apply -f {path}`.
+![img_5.png](readme_images/img_5.png)
