@@ -100,7 +100,7 @@ Abra um terminal e execute o comando com path acima: `kubectl apply -f {path} -n
 
 **Agora vamos configurar para utilizar o mecanismo de service do Kubernetes:**
 
-> Lembrando que deixamos os plugins desabilitados no `bets-api.yaml`.
+> Lembrando que deixamos a linha dos plugins comentados no `bets-api.yaml`.
 > ![img_10.png](readme_images/img_10.png)
 
 Para isso utilizaremos o arquivo: `infra/kong-k8s/misc/apis/king.yaml`, copie o path completo.
@@ -110,3 +110,65 @@ Abra um terminal e execute o comando com path acima: `kubectl apply -f {path} -n
 
 Podemos utilizar o Postman para testar:
 ![img_8.png](readme_images/img_8.png)![img_9.png](readme_images/img_9.png)
+
+---
+
+### Configurando o OpenID Connect
+
+Vamos utilizar o KeyCloak para realizar a autenticação e podemos ver que ele já está rodando em nossos serviços com o
+comando: `kubectl get svc -n iam`.
+
+Primeiro, faça um **port forward** para sua máquina com o comando: `kubectl port-forward svc/keycloak 8080:80 -n iam`.
+
+Em seu navegador, acesse: `localhost:8080` e o **login/senha**: `keycloak`.
+
+Crie um **novo realm**:
+![img_11.png](readme_images/img_11.png)
+
+Crie 2 usuários na aba **Users** e crie uma senha para cada na aba de **Credentials**.
+> Para evitar erros futuros, deixe o campo **Email verified** = true e preencha os campos de **Email, First e Last Name**
+![img_12.png](readme_images/img_12.png)
+
+Crie um **client** do kong:
+> **Valid redirect URIs** = *
+> 
+> **Client authentication** = true
+![img_13.png](readme_images/img_13.png)
+
+Vamos copiar a secret do Client **Kong**:
+![img_14.png](readme_images/img_14.png)
+
+No arquivo: `infra/kong-k8s/misc/apis/kopenid.yaml`, **cole sua nova Secret Key:**
+![img_15.png](readme_images/img_15.png)
+
+Vamos aplicar o OpenID Connect no Cluster com o comando: `kubectl apply -f {path} -n bets`.
+![img_16.png](readme_images/img_16.png)
+
+No arquivo `infra/kong-k8s/misc/apis/bets-api.yaml`, **mude a linha 8** para:
+![img_17.png](readme_images/img_17.png)
+
+E **aplique a configuração** com o comando: `kubectl apply -f {path} -n bets`.
+![img_18.png](readme_images/img_18.png)
+
+A partir de agora, receberemos `Unauthorized` ao fazer **requisições sem autenticação**:
+![img_19.png](readme_images/img_19.png)
+
+**Para conseguirmos realizar uma requisição, precisaremos ter um token válido, para isso siga os passos abaixo:**
+
+1- Abra a pasta no terminal: `infra/kong-k8s/misc/token`.
+
+2- Rode o comando no git Bash para criar o pod de buscar token: `./apply-token.sh`.
+
+3- Acesse o pod com o comando: `kubectl exec -it testcurl -- sh`.
+
+4- No arquivo: `get-token.sh`, troque o **login/senha** pelo usuário criado no Keycloak e o **Secret Key** do client kong:
+![img_20.png](readme_images/img_20.png)
+
+Copie o **curl** acima e cole no terminal do pod:
+> Caso ocorra erro de `Error: Invalid character in header content ["Authorization"]`, tente em outro terminal.
+![img_21.png](readme_images/img_21.png)
+
+Com isso, configuramos a aba de `Authorization` e enviamos a requisição com sucesso:
+![img_22.png](readme_images/img_22.png)
+
+---
